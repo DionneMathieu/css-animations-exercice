@@ -53,8 +53,19 @@ export function AnimationsCSS() {
     // TODO Afficher: Pour afficher rien de spécial à faire, mais assurez-vous que la classe "fade-in" est appliquée à la carte.
     // Regardez plus bas pour utiliser la propriété className directement sur l'élément!
     
+    if (visible == true){
+      console.log("Carte est visible")
+    }
+
     // TODO: Cacher: Pour cacher, il faut d'abord ajouter la classe "fade-out" à la carte, puis attendre 500ms pour que l'animation se termine avant de mettre à jour l'état
     
+    else if (visible == false){
+      const cardElement = document.getElementById(firstCardId)
+      cardElement?.classList.add("fade-out");
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+    }
+
     setCardVisible(visible);
   }
 
@@ -62,12 +73,29 @@ export function AnimationsCSS() {
 
   async function jouerAttaque(side: "player" | "opponent") {
     // TODO: Il faut obtenir l'élément du DOM correspondant à la carte du côté spécifié 
+    
+    if (side == "player"){
+      const cardElement = document.getElementById(attackingCardsIds[0])
+      console.log(attackingCardsIds[0])
+      cardElement?.classList.remove("player-attack");
+      cardElement?.offsetWidth;
+      cardElement?.classList.add("player-attack");
+    }
+    
+    else if (side == "opponent"){
+      const cardElement = document.getElementById(attackingCardsIds[1])
+      cardElement?.classList.remove("opponent-attack");
+      cardElement?.offsetWidth;
+      cardElement?.classList.add("opponent-attack");
+    }
+     
     // Les ids utilisés sont dans l'array attackingCardsIds juste au-dessus de cette fonction.
     // Il y a deux animations possibles : "player-attack" et "opponent-attack"
   }
   
   function activatePower() {
     // TODO: Il faut obtenir l'élément du DOM correspondant à la carte et au pouvoir sélectionnés
+
     // puis lui appliquer la classe "power-active" pour déclencher l'animation.
   }
 
@@ -93,7 +121,7 @@ export function AnimationsCSS() {
             </div>
             <div className="demo-stage hand-stage" aria-label="Démonstration de l’apparition des cartes">
               <div className="card-row">
-                {cardVisible && <PlayingCard id={firstCardId} /* TODO: On peut mettre la classe d'animation fade-in ici, comme ça l'objet l'a dès qu'il existe*//>}
+                {cardVisible && <PlayingCard id={firstCardId} className="fade-in" /* TODO: On peut mettre la classe d'animation fade-in ici, comme ça l'objet l'a dès qu'il existe*//>}
               </div>
             </div>
           </article>
@@ -149,7 +177,7 @@ export function AnimationsCSS() {
             <div className="demo-stage mana-stage" aria-label={`Cartes jouables avec ${mana} manas`}>
               <div className="card-row">
                 {costCards.map((card) => (
-                  <PlayingCard key={card.id} id={card.id} manaCost={card.cost} /*TODO ajouter le className pour jouer l'animation *//>
+                  <PlayingCard key={card.id} id={card.id} manaCost={card.cost} className={card.cost <= mana ? "card-can-be-played" : ""}/*TODO ajouter le className pour jouer l'animation *//>
                 ))}
               </div>
             </div>
